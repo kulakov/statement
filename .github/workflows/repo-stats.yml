@@ -8,7 +8,9 @@ name: repo-stats
 # Встроенного GITHUB_TOKEN тут недостаточно: traffic API его не пускает.
 # Создать токен: Settings → Developer settings → Fine-grained PAT,
 # доступ только к репо kulakov/statement, Repository permissions:
-# Administration = Read-only. Затем gh secret set ghtoken.
+#   Administration = Read-only  (нужно для traffic API)
+#   Contents       = Read and write  (action пишет данные в ветку github-repo-stats)
+# Затем: gh secret set ghtoken -R kulakov/statement
 
 on:
   schedule:
