@@ -1,0 +1,26 @@
+name: repo-stats
+
+# Копит историю трафика репы (Views / Unique visitors / Clones / Referrers /
+# Popular paths) дольше, чем 14-дневное окно GitHub Insights. Данные и
+# отчёт коммитятся в отдельную ветку github-repo-stats этого же репо.
+#
+# Требуется секрет ghtoken — Personal Access Token с доступом к трафику.
+# Встроенного GITHUB_TOKEN тут недостаточно: traffic API его не пускает.
+# Создать токен: Settings → Developer settings → Fine-grained PAT,
+# доступ только к репо kulakov/statement, Repository permissions:
+# Administration = Read-only. Затем gh secret set ghtoken.
+
+on:
+  schedule:
+    # каждый день в 23:00 UTC
+    - cron: "0 23 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      # пин к коммиту релиза v1.4.2 (сторонний action — фиксируем SHA, не плавающий тег)
+      - uses: jgehrcke/github-repo-stats@306db38ad131cab2aa5f2cd3062bf6f8aa78c1aa
+        with:
+          ghtoken: ${{ secrets.ghtoken }}
